@@ -1,0 +1,833 @@
+<div class="row">
+  <div class="panel-body">
+    <h3>Client Token:</h3>
+    <pre><code><span  id="clientToken"></span></code></pre>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Braintree Hosted Fields</h3>
+      </div>
+      <div class="panel-body">
+        <form action="/checkout" id="hosted-fields-form" method="post">
+          <label for="card-number" å>Card Number</label>
+          <div id="card-number"></div>
+          <label for="cvv">CVV</label>
+          <div id="cvv"></div>
+          <label for="expiration-date">Expiration Date</label>
+          <div id="expiration-date"></div>
+          <div id="checkout-message"></div>
+          <input type="submit" class="btn btn-primary" value="Pay" disabled />
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Connect with PayPal</h3>
+      </div>
+      <div class="panel-body">
+        <div id="my_paypal_connect"></div>
+        <span id='cwppButton'></span>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Pay with PayPal - Checkout Flow</h3>
+      </div>
+      <div class="panel-body">
+        <div id="paypal-button"></div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Pay with PayPal - Vault Flow</h3>
+      </div>
+      <div class="panel-body">
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Pay in 4 Messaging</h3>
+      </div>
+      <div class="panel-body">
+        <div data-pp-message data-pp-layout="text" data-pp-text-color="black" data-pp-logo-type="inline"
+          data-pp-amount="100">
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Pay with Venmo</h3>
+      </div>
+      <div class="panel-body">
+        <button id="venmo-button">
+          <img width="280" height="48">
+          Venmo
+        </button>
+        <span id="venmo-button-supported"></span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default"></div>
+    <div class="panel-heading">
+      <h3>ACH</h3>
+    </div>
+    <div class="panel-body">
+      <form action="/checkout" id="ach-fields-form" method="post">
+        <label for="account-number" å>account-number</label>
+        <div id="account-number">
+          <input type="text" name="account-number" value="1000000000">
+        </div>
+        <label for="routing-number">routing-number</label>
+        <div id="routing-number">
+          <input type="text" name="routing-number" value="011000015">
+        </div>
+
+        <label for="accountType">accountType</label>
+        <div id="accountType">
+          <input type="checkbox" name="account-type" value="checking" checked>
+          <label for="account-type">checking</label><br>
+        </div>
+
+        <label for="ownership-type">ownershipType</label><br>
+        <div id="ownership-type">
+          <input type="checkbox" name="ownership-type" value="business" checked>
+          <label for="ownership-type">business</label><br>
+        </div>
+
+        <label for="businessName">businessName</label>
+        <div id="businessName">
+          <input type="text" name="businessName" value="Sample Biz">
+        </div>
+
+        <label for="billingAddress">billingAddress</label>
+        <div id="billing-street-address">
+          <input type="text" name="billing-street-address" value="1000 Foster City Blvd.">
+        </div>
+
+        <label for="billing-extended-address">billing-extended-address</label>
+        <div id="billing-extended-address">
+          <input type="text" name="billing-extended-address" value="APT 4200">
+        </div>
+
+        <label for="billing-locality">billing-locality</label>
+        <div id="billing-locality">
+          <input type="text" name="billing-locality" value="Foster City">
+        </div>
+
+        <label for="billing-region">billing-region</label>
+        <div id="billing-locality">
+          <input type="text" name="billing-region" value="CA">
+        </div>
+
+        <label for="billing-postal-code">billing-postal-code</label>
+        <div id="billing-postal-code">
+          <input type="text" name="billing-postal-code" value="94404">
+        </div>
+
+        <button type="submit" class="btn btn-ach">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Refund</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a
+              href="https://developer.paypal.com/braintree/docs/reference/request/transaction/refund">Refund</a></strong>
+        </p>
+        <p>You can refund transactions that have a status of settled or settling.</p>
+        <p><a class="btn btn-success" href="/refund" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Void</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a href="https://developer.paypal.com/braintree/docs/reference/request/transaction/void">Void
+              Transaction</a></strong></p>
+        <p>You can void transactions that have a status of authorized, submitted for settlement, or - for PayPal -
+          settlement pending. </p>
+        <p><a class="btn btn-success" href="/void" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Create Customer</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a href="https://developers.braintreepayments.com/reference/request/customer/create/node">Create
+              Customer</a></strong></p>
+        <p>You can create a customer by itself, with a payment method, or with a credit card with a billing address</p>
+        <p><a class="btn btn-success" href="/create_customer" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Create Customer and Add Payment Method</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a href="https://developers.braintreepayments.com/reference/request/customer/create/node">Create
+              Customer</a></strong></p>
+        <p>You can create a customer by itself, with a payment method, or with a credit card with a billing address</p>
+        <p><a class="btn btn-success" href="/create_customerWithPaymentMethod" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>JS V3 PayPal Vault</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a href="https://developers.braintreepayments.com/guides/paypal/vault/javascript/v3">JS V3 SDK -
+              PayPal Vault</a></strong></p>
+        <p>Vaulting a PayPal account will allow you to charge the account in the future without requiring your customer
+          to re-authenticate with PayPal.</p>
+        <p><a class="btn btn-success" href="/vzero/paypalV3Vault" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>JS V3 PayPal Vault with Token</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a href="https://developers.braintreepayments.com/guides/paypal/vault/javascript/v3">JS V3 SDK -
+              PayPal Vault</a></strong></p>
+        <p>Vaulting a PayPal account will allow you to charge the account in the future without requiring your customer
+          to re-authenticate with PayPal.</p>
+        <p><a class="btn btn-success" href="/vzero/paypalV3VaultwToken" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>JS V3 PayPal Checkout with Order</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a
+              href="https://developers.braintreepayments.com/reference/general/paypal-advanced-options/paypal-order/overview/">JS
+              V3 SDK - PayPal Checkout with order</a></strong></p>
+        <p><a class="btn btn-success" href="/vzero/paypalV3CheckoutOrder" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>JS V3 PayPal Checkout</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a
+              href="https://developers.braintreepayments.com/guides/paypal/checkout-with-paypal/javascript/v3">JS V3 SDK
+              - PayPal Checkout</a></strong></p>
+        <p>Checkout with PayPal is a one-time payment checkout experience that gives you more control throughout the
+          entire checkout process. It offers a streamlined checkout flow that keeps customers local to your website
+          throughout the payment authorization process.</p>
+        <p><a class="btn btn-success" href="/vzero/paypalV3Checkout" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>JS V2 Drop-in</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a href="https://developers.braintreepayments.com/guides/drop-in/javascript/v2">Drop-in JS Version
+              2</a></strong></p>
+        <p>Drop-in UI offers a complete, ready-made payment UI for a quick and easy way to accept payments</p>
+        <p><a class="btn btn-success" href="/vzero/dropin" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>JS V2 Drop-in+Vaulted Customer</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a href="https://developers.braintreepayments.com/guides/drop-in/javascript/v2#customer-id">Drop-in
+              JS Version 2 with Vaulted Customers</a></strong></p>
+        <p>If you pass a customerId when generating the client token, the Drop-in will display that customer's saved
+          payment methods.</p>
+        <p><a class="btn btn-success" href="/vzero/dropinCustId" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>JS V2 Hosted Fields</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a
+              href="https://developers.braintreepayments.com/guides/hosted-fields/setup-and-integration/javascript/v2">Hosted
+              Fields Choxi Experience</a></strong></p>
+        <p>Hosted Fields renders an iframe to handle input for each field where your customer enters credit card
+          details. This provides you with the ability to customize the look and feel of your web page while ensuring
+          that you are compliant with the new PCI rules.</p>
+        <p><a class="btn btn-success" href="/vzero/chosted" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>JS V2 Credit Card Direct Tokenization</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a
+              href="https://developers.braintreepayments.com/reference/client-reference/javascript/v2/credit-cards#credit-card-direct-tokenzation">Credit
+              Card Direct Tokenization Experience</a></strong></p>
+        <p>If you are doing more complex things with your form, such as your own submit callbacks or custom validation,
+          we recommend using a lower-level integration - Not SAQ A PCI compliant</p>
+        <p><a class="btn btn-success" href="/vzero/v2ccDirectTokenization" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>JS V2 PayPal Vault</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a href="https://developers.braintreepayments.com/guides/paypal/vault/javascript/v2">JS V2 SDK -
+              PayPal Vault Experience</a></strong></p>
+        <p>Vaulting a PayPal account will allow you to charge the account in the future without requiring your customer
+          to re-authenticate with PayPal.</p>
+        <p><a class="btn btn-success" href="/vzero/paypalV2Vault" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>JS V2 PayPal Checkout</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a
+              href="https://developers.braintreepayments.com/guides/paypal/checkout-with-paypal/javascript/v2">JS V2 SDK
+              - PayPal Vault Experience</a></strong></p>
+        <p>Checkout with PayPal is a one-time payment checkout experience that gives you more control throughout the
+          entire checkout process. It offers a streamlined checkout flow that keeps customers local to your website
+          throughout the payment authorization process.</p>
+        <p><a class="btn btn-success" href="/vzero/paypalV2Checkout" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>JS V2 Headless PayPal</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a
+              href="https://developers.braintreepayments.com/reference/client-reference/javascript/v2/best-practices#custom-ui">Headless
+              PayPal Experience</a></strong></p>
+        <p>If you wish to open the PayPal auth flow using a button other than the one provided by Braintree, you must
+          use a combination of a headless PayPal integration and the paypal.initAuthFlow method returned from the
+          onReady callback.</p>
+        <p><a class="btn btn-success" href="/vzero/paypalHeadless" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>JS V2 PayPal Credit</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a href="https://developers.braintreepayments.com/guides/paypal/paypal-credit/javascript/v2">PayPal
+              Credit Button Experience</a></strong></p>
+        <p>PayPal Credit is a customer credit offering from PayPal</p>
+        <p><a class="btn btn-success" href="/vzero/paypalV2Credit" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>PayPal Channel Initiated Billing Agreement flow with Payee Email</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong>Master Merchant Acct - Business BR :</strong>
+          businesslivebrpp@gmail.com</p>
+        <p><strong>Child Merchant Acct - Merchant BR :</strong>
+          merchantppbr@gmail.com</p>
+        <p><a class="btn btn-primary" href="/latam/paypalCIBAPayeeEmail" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>PayPal Channel Initiated Billing Agreement flow using BAID & Payee Email</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong>Master Merchant Acct - Business BR :</strong>
+          businesslivebrpp@gmail.com</p>
+        <p><strong>Child Merchant Acct - Merchant BR :</strong>
+          merchantppbr@gmail.com</p>
+        <p><a class="btn btn-primary" href="/latam/paypalCIBAIDPayeeEmail" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  var hostedFieldForm = document.querySelector('#hosted-fields-form');
+  var submit = document.querySelector('input[type="submit"]');
+
+  var ACHForm = document.querySelector('#ach-fields-form');
+  var deviceData;
+
+
+  $.ajax({
+    url: '/client_token',
+    type: 'GET',
+    dataType: 'text',
+    success: function (clientToken) {
+      $('#clientToken').html(clientToken);
+      console.log(clientToken);
+      braintree.client.create({
+        // Insert your client Token here
+        authorization: clientToken
+      }, function (clientErr, clientInstance) {
+
+        if (clientErr) {
+          console.error('Error creating client:', clientErr);
+          return;
+        }
+
+        braintree.dataCollector.create({
+          client: clientInstance,
+          paypal: true
+        }, function (dataCollectorErr, dataCollectorInstance) {
+          if (dataCollectorErr) {
+            // Handle error in creation of data collector.
+            return;
+          }
+
+          // At this point, you should access the deviceData value and provide it
+          // to your server, e.g. by injecting it into your form as a hidden input.
+          console.log('Got device data:', dataCollectorInstance.deviceData);
+          deviceData = dataCollectorInstance.deviceData;
+        });
+
+        // Create a PayPal Checkout component (Onetime Checkout)
+        braintree.paypalCheckout.create({
+          client: clientInstance
+        }, function (paypalCheckoutErr, paypalCheckoutInstance) {
+          paypalCheckoutInstance.loadPayPalSDK({
+            components: 'buttons,funding-eligibility,messages',
+            dataAttributes: {
+              amount: '99.00'
+            },
+            currency: 'USD',
+            intent: 'capture'
+          }, function () {
+            paypal.Buttons({
+              fundingSource: paypal.FUNDING.PAYPAL,
+
+              createOrder: function () {
+                return paypalCheckoutInstance.createPayment({
+                  flow: 'checkout', // Required
+                  amount: 4000.00, // Required
+                  currency: 'USD', // Required, must match the currency passed in with loadPayPalSDK
+
+                  intent: 'capture', // Must match the intent passed in with loadPayPalSDK
+
+                  enableShippingAddress: true,
+                  shippingAddressEditable: true,
+                  shippingAddressOverride: {
+                    recipientName: 'Scruff McGruff',
+                    line1: '1234 Main St.',
+                    line2: 'Unit 1',
+                    city: 'Chicago',
+                    countryCode: 'US',
+                    postalCode: '60652',
+                    state: 'IL',
+                    phone: '123.456.7890'
+                  }
+                });
+              },
+
+              onApprove: function (data, actions) {
+                return paypalCheckoutInstance.tokenizePayment(data, function (err, payload) {
+                  // Submit `payload.nonce` to your server
+                  if (payload) {
+                    console.log('PayPal Payload received:' + JSON.stringify(payload, 0, 2));
+                    console.log('Sending PayPal nounce to NodeJS Server..');
+                    $.ajax({
+                      type: 'POST',
+                      url: '/checkout',
+                      data: { 'paymentMethodNonce': payload.nonce }
+                    })
+                  } else {
+                    console.error('PayPal error', err);
+                  }
+                });
+              },
+
+              onCancel: function (data) {
+                console.log('PayPal payment cancelled', JSON.stringify(data, 0, 2));
+              },
+
+              onError: function (err) {
+                console.error('PayPal error', err);
+              }
+            }).render('#paypal-button').then(function () {
+              // The PayPal button will be rendered in an html element with the ID
+              // `paypal-button`. This function will be called when the PayPal button
+              // is set up and ready to be used
+            });
+
+
+          });
+
+        });
+
+        // Create a Venmo component
+        var venmoButton = document.getElementById('venmo-button');
+
+        braintree.venmo.create({
+          client: clientInstance,
+          allowDesktop: true,
+          // Add allowNewBrowserTab: false if your checkout page does not support
+          // relaunching in a new tab when returning from the Venmo app. This can
+          // be omitted otherwise.
+          // allowNewBrowserTab: false
+        }, function (venmoErr, venmoInstance) {
+          if (venmoErr) {
+            console.error('Error creating Venmo:', venmoErr);
+            return;
+          }
+
+          // Verify browser support before proceeding.
+          if (!venmoInstance.isBrowserSupported()) {
+            console.log('Browser does not support Venmo');
+            $('#venmo-button-supported').html("Venmo is currently supported for most Android and iOS mobile web browsers. It does not support webviews here.");
+            return;
+          }
+
+          displayVenmoButton(venmoInstance);
+          // Check if tokenization results already exist. This occurs when your
+          // checkout page is relaunched in a new tab. This step can be omitted
+          // if allowNewBrowserTab is false.
+          if (venmoInstance.hasTokenizationResult()) {
+            venmoInstance.tokenize(function (tokenizeErr, payload) {
+              if (err) {
+                handleVenmoError(tokenizeErr);
+              } else {
+                handleVenmoSuccess(payload);
+              }
+            });
+            return;
+          }
+        });
+
+        function displayVenmoButton(venmoInstance) {
+          // Assumes that venmoButton is initially display: none.
+          venmoButton.style.display = 'block';
+
+          venmoButton.addEventListener('click', function () {
+            venmoButton.disabled = true;
+
+            venmoInstance.tokenize(function (tokenizeErr, payload) {
+              venmoButton.removeAttribute('disabled');
+
+              if (tokenizeErr) {
+                handleVenmoError(tokenizeErr);
+              } else {
+                handleVenmoSuccess(payload);
+              }
+            });
+          });
+        }
+
+        function handleVenmoError(err) {
+          if (err.code === 'VENMO_CANCELED') {
+            console.log('App is not available or user aborted payment flow');
+          } else if (err.code === 'VENMO_APP_CANCELED') {
+            console.log('User canceled payment flow');
+          } else {
+            console.error('An error occurred:', err.message);
+          }
+        }
+
+        function handleVenmoSuccess(payload) {
+          // Send payload.nonce to your server.
+          console.log('Got a payment method nonce:', payload.nonce);
+          // Display the Venmo username in your checkout UI.
+          console.log('Venmo user: ', payload.details.username);
+          console.log('Entire Payload: ', payload);
+
+          $.ajax({
+            method: "POST",
+            url: "/checkout",
+            data: { 'paymentMethodNonce': payload.nonce }
+          });
+        }
+
+        // Create a hostedFields component to initialize the form
+        braintree.hostedFields.create({
+          client: clientInstance,
+          // Customize the Hosted Fields.
+          // More information can be found at:
+          // https://developers.braintreepayments.com/guides/hosted-fields/styling/javascript/v3
+          styles: {
+            'input': {
+              'font-size': '14px'
+            },
+            'input.invalid': {
+              'color': 'red'
+            },
+            'input.valid': {
+              'color': 'green'
+            }
+          },
+          // Configure which fields in your card form will be generated by Hosted Fields instead
+          fields: {
+            number: {
+              selector: '#card-number',
+              placeholder: '4111 1111 1111 1111',
+              prefill: '4111 1111 1111 1111',
+              supportedCardBrands: {
+                discover: true,
+                mastercard: true //to enable or disable a card brand
+              }
+            },
+            cvv: {
+              selector: '#cvv',
+              placeholder: '400',
+              prefill: '400'
+            },
+            expirationDate: {
+              selector: '#expiration-date',
+              placeholder: '09/2022',
+              prefill: '09/2022'
+            }
+          }
+
+        }, function (hostedFieldsErr, instance) {
+          if (hostedFieldsErr) {
+            console.error(hostedFieldsErr);
+            return;
+          }
+
+          // Once the fields are initialized enable the submit button
+          submit.removeAttribute('disabled');
+
+          // Initialize the form submit event
+          hostedFieldForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            // When the user clicks on the 'Submit payment' button this code will send the
+            // encrypted payment information in a variable called a payment method nonce
+            instance.tokenize(function (tokenizeErr, payload) {
+              if (tokenizeErr) {
+                console.log('Originated from Hosted Fields in index.hbs: tokenizeErr');
+                console.error(tokenizeErr);
+                return;
+              }
+
+              console.log('Received a nonce: ' + payload.nonce);
+
+              $.ajax({
+                type: 'POST',
+                url: '/create_customerWithPaymentMethod',
+                data: { 'paymentMethodNonce': payload.nonce }
+              });
+
+              $.ajax({
+                type: 'POST',
+                url: '/checkout',
+                data: { 'paymentMethodNonce': payload.nonce }
+              }).done(function (result) {
+                console.log(result);
+                // Tear down the Hosted Fields form
+                instance.teardown(function (teardownErr) {
+                  if (teardownErr) {
+                    console.error('Could not tear down the Hosted Fields form!');
+                  } else {
+                    console.info('Hosted Fields form has been torn down!');
+                    // Remove the 'Submit payment' button
+                    $('#hosted-fields-form').remove();
+                  }
+                });
+
+                if (result.success) {
+                  $('#checkout-message').html('<h1>Success</h1><p>Your Hosted Fields form is working! Check your <a href="https://sandbox.braintreegateway.com/login">sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>');
+                } else {
+                  $('#checkout-message').html('<h1>Error</h1><p>Check your console.</p>');
+                }
+              });
+
+            });
+          }, false);
+        });
+
+        braintree.usBankAccount.create({
+          client: clientInstance,
+
+        }, function (usBankAccountErr, usBankAccountInstance) {
+          if (usBankAccountErr) {
+            console.error('There was an error creating the USBankAccount instance.');
+            throw usBankAccountErr;
+          }
+          // Collect bankDetails or bankLogin.
+          var bankDetails = {
+            //accountNumber: $('#account-number').val(),
+            accountNumber: '1000000000',
+            //routingNumber: $('#routing-number').val(),
+            routingNumber: '011000015',
+            accountType: $('input[name="account-type"]:checked').val(),
+            ownershipType: $('input[name="ownership-type"]:checked').val(),
+            billingAddress: {
+              streetAddress: '1000 Foster City Blvd',
+              extendedAddress: 'Unit 3',
+              locality: 'Foster City',
+              region: 'CA',
+              postalCode: '94404'
+            },
+            businessName: 'Unz'
+          }
+
+          console.log("bankDetails:", bankDetails);
+
+          if (bankDetails.ownershipType === 'personal') {
+            bankDetails.firstName = $('#first-name').val();
+            bankDetails.lastName = $('#last-name').val();
+          } else {
+            //bankDetails.businessName = $('#business-name').val();
+
+          }
+
+          ACHForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            // When the user clicks on the 'Submit payment' button this code will send the
+            // encrypted payment information in a variable called a payment method nonce
+            console.log("bank details1: ", bankDetails);
+
+            usBankAccountInstance.tokenize({
+              bankDetails: bankDetails, // or bankLogin: bankLogin
+              mandateText: 'By clicking ["Checkout"], I authorize Braintree, a service of PayPal, on behalf of [your business name here] (i) to verify my bank account information using bank information and consumer reports and (ii) to debit my bank account.'
+            }, function (tokenizeErr, tokenizedPayload) {
+              if (tokenizeErr) {
+                console.log("bank details2: ", bankDetails);
+                console.log('usBankAccountInstance tokenizeErr');
+                console.error('There was an error tokenizing the bank details.');
+                throw tokenizeErr;
+              }
+
+              console.log("ACH Tokenization successful. Nonce: ", tokenizedPayload.nonce);
+              // Submit tokenizedPayload.nonce to your server as you would
+              // other payment method nonces.
+              $.ajax({
+                type: 'POST',
+                url: '/checkout',
+                data: { 'paymentMethodNonce': tokenizedPayload.nonce, 'deviceData': deviceData }
+              }).done(function (result) {
+                console.log(result);
+                // Tear down the ACH form
+                usBankAccountInstance.teardown(function (teardownErr) {
+                  if (teardownErr) {
+                    console.error('Could not tear down the ACH form!');
+                  } else {
+                    console.info('ACH form has been torn down!');
+                    // Remove the 'Submit payment' button
+                    $('#ach-fields-form').remove();
+                  }
+                });
+              });
+
+            });
+
+          }, false);
+
+        });
+
+      });
+
+    },
+    error: function (request, error) {
+      alert(error);
+    }
+  });
+
+  //Connect with PayPal
+  paypal.use([ 'login' ], function (login) {
+    login.render({
+      "appid": "ASPGbv15sl8yUXm5DmzW4as9M3yCNmh_Ur6pZpGpv0-DRNQMKHUTuYQroyKWJgagnQ-kE5GN6AuqG3qg",
+      "authend": "sandbox",
+      "scopes": "openid profile email address",
+      "containerid": "cwppButton",
+      "responseType": "code",
+      "locale": "en-us",
+      "buttonType": "CWP",
+      "buttonShape": "pill",
+      "buttonSize": "lg",
+      "fullPage": "true",
+      "returnurl": "https://example.com"
+    });
+  });
+
+
+</script>
