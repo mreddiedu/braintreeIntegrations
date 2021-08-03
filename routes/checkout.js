@@ -17,6 +17,7 @@ router.post('/', function (req, res, next) {
   var nonceFromTheClient = req.body.paymentMethodNonce;
   var deviceDataFromTheClient = req.body.deviceData;
 
+  /*
   gateway.customer.find("scribd_01", function (err, customer) {
     if (!err) {
       console.log("\n ==========Create Customer from nonce======== \n", JSON.stringify(customer, null, 4), "\n");
@@ -24,6 +25,9 @@ router.post('/', function (req, res, next) {
       console.error(err);
     }
   });
+  */
+
+  /*
 
   gateway.paymentMethod.create({
     customerId: "scribd_01",
@@ -35,6 +39,8 @@ router.post('/', function (req, res, next) {
   }, (err, result) => {
     console.log("\n ==========Payment Method Create======== \n", JSON.stringify(result, null, 4), "\n");
    });
+
+   */
 
 
   /*
@@ -231,10 +237,10 @@ router.post('/', function (req, res, next) {
   // Create a new transaction 
 
 
-  /*
+  
   var newTransaction = gateway.transaction.sale({
     //merchantAccountId: 'digitalcashwanderlandINR', //specify merchantAccountId for presentment currencies. 
-    amount: '111.00',
+    amount: '1000.00',
     taxAmount: '10.00',
     // lineItems: {
     //   // kind: 'credit',
@@ -269,7 +275,7 @@ router.post('/', function (req, res, next) {
     } else {
       res.status(500).send(error);
     }
-  });*/
+  });
 });
 
 module.exports = router;
