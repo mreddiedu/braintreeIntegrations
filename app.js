@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var checkoutRouter = require('./routes/checkout');
 var refundRouter = require('./routes/refund');
+var resultRouter = require('./routes/result');
 var searchRouter = require('./routes/search');
 var voidRouter = require('./routes/void');
 var client_tokenRouter = require('./routes/client_token');
@@ -35,6 +36,10 @@ app.use('/void', voidRouter);
 app.use('/client_token', client_tokenRouter);
 app.use('/create_customer', create_customerRouter);
 app.use('/create_customerWithPaymentMethod', create_customerWithPaymentMethodRouter);
+
+// Display payment result for dLocal
+app.use('/result', resultRouter);
+app.use(express.urlencoded({extended: true}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
