@@ -3,7 +3,6 @@ var router = express.Router();
 var braintree = require('braintree');
 
 var transactionId = 'm2yf4090'; //specify transactionId here
-var refund_result = null;
 
 router.get('/', function (req, res, next) {
 
@@ -15,7 +14,7 @@ router.get('/', function (req, res, next) {
     privateKey: '9632cee15f46df181b4042f743682f18'
   });
 
-  gateway.transaction.find("4bzz6s30", (err, transaction) => {
+  gateway.transaction.find(transactionId, (err, transaction) => {
     transaction.statusHistory.forEach((event) => {
       console.log("event.amount", event.amount);
       console.log("event.status", event.status);
@@ -29,29 +28,22 @@ router.get('/', function (req, res, next) {
     console.log("\n =========Transaction.Find result object========= \n", transaction);
   });
 
-    gateway.transaction.refund(transactionId, (err, result) => {
-      if(result.success) {
-        console.log("refund successful: ", result.message);
-        console.log("\n =========Refund result object========= \n", result.statusHistory);
-        refund_result = JSON.stringify(result, null, 4);
-        console.log(refund_result);
+  gateway.transaction.refund(transactionId, (err, result) => {
+    if (result.success) {
+      console.log("refund successful: ", result.message);
+      console.log("\n =========Refund result object========= \n", result.statusHistory);
+      console.log(JSON.stringify(result, null, 4));
+    } else {
+      console.log("refund failed: ", result.message);
+    }
 
-        res.render('refund', {
-          id: transactionId,
-          result: refund_result
-        });
-
-      } else {
-        console.log("refund failed: ", result.message);
-        res.render('refund', {
-          id: transactionId,
-          result: err
-        });
-      }
-      
+    res.render('responseTemplate', {
+      serverApiRequest: 'Refund',
+      id: transactionId,
+      result: "Refund result: " + result.success + '\n' + result.message + '\n' + JSON.stringify(result, null, 4)
     });
+  });
 
-  
 
 });
 

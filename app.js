@@ -14,6 +14,7 @@ var voidRouter = require('./routes/void');
 var client_tokenRouter = require('./routes/client_token');
 var create_customerRouter = require('./routes/create_customer');
 var create_customerWithPaymentMethodRouter = require('./routes/create_customerWithPaymentMethod');
+var customerFindRouter = require('./routes/customer_find');
 
 var app = express(); //Creates an Express application. The express() function is a top-level function exported by the express module.
 
@@ -36,6 +37,8 @@ app.use('/void', voidRouter);
 app.use('/client_token', client_tokenRouter);
 app.use('/create_customer', create_customerRouter);
 app.use('/create_customerWithPaymentMethod', create_customerWithPaymentMethodRouter);
+app.use('/customer_find', customerFindRouter);
+
 
 // Display payment result for dLocal
 app.use('/result', resultRouter);

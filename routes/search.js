@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 var braintree = require('braintree');
 
-var transactionId = '5x0p7dgk'; //specify transactionId here
-var refund_result = null;
+var customerID = '109961427'; //specify transactionId here
+var customerSearchResult = [];
 
 router.get('/', function (req, res, next) {
 
@@ -17,27 +17,22 @@ router.get('/', function (req, res, next) {
 
   var nonceFromTheClient = req.body.paymentMethodNonce;
 
-  gateway.transaction.find("5x0p7dgk", (err, transaction) => {
-    transaction.statusHistory.forEach((event) => {
-      console.log("event.amount", event.amount);
-      console.log("event.status", event.status);
-      console.log("event.timestamp", event.timestamp);
-      console.log("event.transactionSource", event.transactionSource);
-      console.log("event.user", event.user);
+  const stream = gateway.customer.search((search) => {
+    search.id().is(customerID);
+  }, (err, response) => {
+    response.each((err, customer) => {
+      var obj = JSON.stringify(customer, null, 4);
+      customerSearchResult.push(obj);
+      
+      console.log("\n ==========Search Customer======== \n", JSON.stringify(customer, null, 4), "\n");
     });
   });
 
-    gateway.transaction.refund(transactionId, (err, result) => {
-      console.log("\n =========Refund result object========= \n", result.statusHistory);
-      refund_result = JSON.stringify(result, null, 4);
-      console.log(refund_result);
-    });
-
-  res.render('refund', {
-    id: transactionId,
-    result: refund_result
+  res.render('responseTemplate', {
+    serverApiRequest: 'Customer Search',
+    id: customerID,
+    result: customerSearchResult
   });
-
 });
 
 module.exports = router;

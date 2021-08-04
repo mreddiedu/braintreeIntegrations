@@ -18,7 +18,7 @@ gateway.clientToken.generate({}, (err, response) => {
 
 
 router.post('/', function (req, res, next) {
-    
+
     nonceFromTheClient = req.body.paymentMethodNonce;
     console.log("create_customerWithPaymentMethod.js received nonceFromTheClient: ", nonceFromTheClient);
 });
@@ -29,17 +29,25 @@ router.get('/', function (req, res, next) {
         //id: "customer_123", // specify customer ID
         paymentMethodNonce: nonceFromTheClient,
         firstName: "Jen",
-        lastName: "Smith",
+        lastName: "Du",
         company: "Braintree",
         email: "jen@example.com",
         phone: "312.555.1234",
         fax: "614.555.5678",
-        website: "www.example.com"
-      }, (err, result) => {
+        website: "www.example.com",
+        creditCard: {
+            options: {
+              verifyCard: true
+            }
+        },
+        customFields: {
+            stripe_token: "stripeTok1"
+        }
+    }, (err, result) => {
         result.success;
         // true
         customer_result = JSON.stringify(result, null, 4);
-        console.log("\n ==============create_customerWithPaymentMethod Create Customer Result============== \n", customer_result); 
+        console.log("\n ==============create_customerWithPaymentMethod Create Customer Result============== \n", customer_result);
         result.customer.id;
         // e.g. 494019
 
@@ -49,33 +57,31 @@ router.get('/', function (req, res, next) {
             result: customer_result
         })
 
-      });
-
-      
-
-/* 
-    //Promise based code
-    gateway.customer.create({
-        firstName: "Scribd",
-        lastName: "Tester1",
-        company: "Braintree",
-        email: "jen@example.com",
-        phone: "312.555.1234",
-        fax: "614.555.5678",
-        website: "www.example.com"
-    }).then(result => {
-        result.success;
-        // true
-        customer_result = JSON.stringify(result, null, 4);
-        customer_id = result.customer.id;
-        // e.g. 494019
-    }).then( () => {
-        res.render('create_customer', {
-            id: customer_id,
-            result: customer_result
-        })
     });
-    */
+
+    /* 
+        //Promise based code
+        gateway.customer.create({
+            firstName: "Scribd",
+            lastName: "Tester1",
+            company: "Braintree",
+            email: "jen@example.com",
+            phone: "312.555.1234",
+            fax: "614.555.5678",
+            website: "www.example.com"
+        }).then(result => {
+            result.success;
+            // true
+            customer_result = JSON.stringify(result, null, 4);
+            customer_id = result.customer.id;
+            // e.g. 494019
+        }).then( () => {
+            res.render('create_customer', {
+                id: customer_id,
+                result: customer_result
+            })
+        });
+        */
 
 });
 

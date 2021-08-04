@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var braintree = require('braintree');
 
-var transactionId = '60rrgr6b'; //specify transactionId here
+var customerID = '109961427'; //specify customerID here
 
 router.get('/', function (req, res, next) {
 
@@ -14,24 +14,20 @@ router.get('/', function (req, res, next) {
     privateKey: '9632cee15f46df181b4042f743682f18'
   });
 
-  gateway.transaction.void(transactionId, (err, result) => {
 
-    if (result.success) {
-      console.log("\n =========Void result object========= \n", result.statusHistory);
-      console.log(JSON.stringify(result, null, 4));
+  gateway.customer.find(customerID, function (err, customer) {
+    if (!err) {
+      console.log("\n ==========Find Customer======== \n", JSON.stringify(customer, null, 4), "\n");
     } else {
-      console.log("Void Error: ", result.message);
+      console.error("Customer Find Error: ", err);
     }
 
     res.render('responseTemplate', {
-      serverApiRequest: 'Void',
-      id: transactionId,
-      result: "Void Result: " + result.success + '\n' + result.message + '\n \n' + JSON.stringify(result, null, 4)
+      serverApiRequest: 'Customer Find',
+      id: customerID,
+      result: !err == true ? JSON.stringify(customer, null, 4) : err
     });
-
   });
-
-
 
 });
 

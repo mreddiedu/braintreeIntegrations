@@ -16,15 +16,72 @@ router.post('/', function (req, res, next) {
 
   var nonceFromTheClient = req.body.paymentMethodNonce;
   var deviceDataFromTheClient = req.body.deviceData;
+  const postalCodeFromTheClient = req.body.postalCode; //for Apple Pay
 
+  // Create a new transaction for $10
+  const newTransaction = gateway.transaction.sale({
+    amount: '10.00',
+    paymentMethodNonce: nonceFromTheClient,
+    deviceData: deviceDataFromTheClient,
+    options: {
+      // This option requests the funds from the transaction
+      // once it has been authorized successfully
+      submitForSettlement: true
+    },
+    billing: {
+        postalCode: postalCodeFromTheClient
+    }
+  }, (error, result) => {
+      if (result) {
+        console.log(JSON.stringify(result, null, 4));
+        res.send(result);
+      } else {
+        console.log(error);
+        res.status(500).send(error);
+      }
+  });
+
+  // Create a new transaction 
   /*
-  gateway.customer.find("scribd_01", function (err, customer) {
-    if (!err) {
-      console.log("\n ==========Create Customer from nonce======== \n", JSON.stringify(customer, null, 4), "\n");
+  var newTransaction = gateway.transaction.sale({
+    //merchantAccountId: 'digitalcashwanderlandINR', //specify merchantAccountId for presentment currencies. 
+    amount: '1000.00',
+    taxAmount: '10.00',
+    // lineItems: {
+    //   // kind: 'credit',
+    //   // name: 'test_transaction',
+    //   // quantity: '1.00',
+    //   // taxAmount: '10.00', 
+    //   // totalAmount: '110.00',
+    //   // unitAmount: '100.00'
+    // },
+    paymentMethodNonce: nonceFromTheClient,
+    // "customer": {
+    //   "id": "a_customer_id"
+    // },
+    customFields: {
+      line_of_business: "Citation"
+    },
+    purchaseOrderNumber: '1234567890',
+    options: {
+      //storeInVaultOnSuccess: true,
+      // This option requests the funds from the transaction
+      // once it has been authorized successfully
+      submitForSettlement: true
+    }
+  }, function (error, result) {
+
+    // true
+
+    if (result) {
+      console.log("\n =========Braintree Transaction.Sale Result Object========= \n", JSON.stringify(result, null, 4));
+      console.log('gateway.transaction.sale API call for nonce: ' + nonceFromTheClient + ' is completed');
+      res.send(result);
     } else {
-      console.error(err);
+      res.status(500).send(error);
     }
   });
+  
   */
 
   /*
@@ -42,9 +99,18 @@ router.post('/', function (req, res, next) {
 
    */
 
+   /*
+   gateway.customer.update("109961427", {
+      customFields: {
+        stripe_token: "stripeTok2"
+      }
+  }, (err, result) => {
+    console.log("\n ==========Updating Customer======== \n", JSON.stringify(result, null, 4), "\n");
+  });
+  */
 
   /*
-    gateway.paymentMethod.update("gtrqbyw", {
+    gateway.paymentMethod.update("4z3gssr", {
       paymentMethodNonce: nonceFromTheClient,
       billingAddress: {
         streetAddress: "1 E Main St",
@@ -55,36 +121,10 @@ router.post('/', function (req, res, next) {
       options: {
         verifyCard: true
       }
+
     }, (err, result) => {
       console.log("\n ==========Updating Payment Method from nonce======== \n", JSON.stringify(result, null, 4), "\n");
     });
-    */
-
-  /*
-  gateway.customer.create({
-    firstName: "Scribd",
-    lastName: "Tester1",
-    company: "Braintree",
-    email: "jen@example.com",
-    phone: "312.555.1234",
-    fax: "614.555.5678",
-    website: "www.example.com",
-    paymentMethodNonce: nonceFromTheClient,
-    creditCard: {
-      options: {
-        verifyCard: true
-      }
-    }
-  }, (err, result) => {
-    console.log("\n ==========Creating Customer Begins======== \n");
-    console.log("nonceFromTheClient: ", nonceFromTheClient);
-    result.success;
-    // true
-    console.log(JSON.stringify(result, null, 4));
-    customer_result = result;
-    customer_id = result.customer.id;
-    // e.g. 494019
-  });
   */
 
   /*
@@ -128,7 +168,7 @@ router.post('/', function (req, res, next) {
       });
       console.log("\n ==========Find Transaction Ends======== \n");
     });
-    */
+  */
 
   /*
   gateway.paymentMethod.revoke(
@@ -209,73 +249,30 @@ router.post('/', function (req, res, next) {
   }); */
 
 
+/*
+  //To create subscription
+  var i, planID_HOLDER;
 
-  // //To create subscription
-  // var i, planID_HOLDER;
-
-  // for (i = 1; i < 30; i++) {
-  //   if(i == 5 || i == 15 || i == 20 || i == 25) {
-  //     planID_HOLDER = "recurring_billing_plan_" + i;
-  //     console.log(planID_HOLDER + "Created");
-  //     gateway.subscription.create({
-  //       paymentMethodToken: "m85ww9g",
-  //       planId: planID_HOLDER
-  //     }, (err, result) => {
-  //       if (result) {
-  //         console.log("subcription:");
-  //         res.send(result);
-  //       } else {
-  //         res.status(500).send(error);
-  //       }
-  //     }); 
-  //   }
-  // }
-
-  // Use the payment method nonce here
-
-
-  // Create a new transaction 
-
-
-  
-  var newTransaction = gateway.transaction.sale({
-    //merchantAccountId: 'digitalcashwanderlandINR', //specify merchantAccountId for presentment currencies. 
-    amount: '1000.00',
-    taxAmount: '10.00',
-    // lineItems: {
-    //   // kind: 'credit',
-    //   // name: 'test_transaction',
-    //   // quantity: '1.00',
-    //   // taxAmount: '10.00', 
-    //   // totalAmount: '110.00',
-    //   // unitAmount: '100.00'
-    // },
-    paymentMethodNonce: nonceFromTheClient,
-    // "customer": {
-    //   "id": "a_customer_id"
-    // },
-    customFields: {
-      line_of_business: "Citation"
-    },
-    purchaseOrderNumber: '1234567890',
-    options: {
-      //storeInVaultOnSuccess: true,
-      // This option requests the funds from the transaction
-      // once it has been authorized successfully
-      submitForSettlement: true
+  for (i = 1; i < 30; i++) {
+    if(i == 5 || i == 15 || i == 20 || i == 25) {
+      planID_HOLDER = "recurring_billing_plan_" + i;
+      console.log(planID_HOLDER + "Created");
+      gateway.subscription.create({
+        paymentMethodToken: "m85ww9g",
+        planId: planID_HOLDER
+      }, (err, result) => {
+        if (result) {
+          console.log("subcription:");
+          res.send(result);
+        } else {
+          res.status(500).send(error);
+        }
+      }); 
     }
-  }, function (error, result) {
+  }
+*/
 
-    // true
 
-    if (result) {
-      console.log("\n =========Braintree Transaction.Sale Result Object========= \n", JSON.stringify(result, null, 4));
-      console.log('gateway.transaction.sale API call for nonce: ' + nonceFromTheClient + ' is completed');
-      res.send(result);
-    } else {
-      res.status(500).send(error);
-    }
-  });
 });
 
 module.exports = router;

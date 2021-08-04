@@ -19,8 +19,8 @@ router.get('/', function (req, res, next) {
 
     gateway.customer.create({
         //id: "customer_123", // specify customer ID
-        firstName: "Jen",
-        lastName: "Smith",
+        firstName: "Create",
+        lastName: "Customer1",
         company: "Braintree",
         email: "jen@example.com",
         phone: "312.555.1234",

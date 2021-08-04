@@ -79,6 +79,16 @@
       </div>
     </div>
 
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Apple Pay</h3>
+      </div>
+      <div class="panel-body">
+        <p>Use Safari to view Apple Pay</p>
+        <div id="apple-pay-button" class="apple-pay-button apple-pay-button-black"></div>
+      </div>
+    </div>
+
   </div>
 
 </div>
@@ -184,7 +194,6 @@
 
 
 <div class="row">
-
   <div class="col-md-6">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -193,7 +202,7 @@
       <div class="panel-body">
         <p><strong><a href="https://developers.braintreepayments.com/reference/request/customer/create/node">Create
               Customer</a></strong></p>
-        <p>You can create a customer by itself, with a payment method, or with a credit card with a billing address</p>
+        <p>You can create a customer by itself</p>
         <p><a class="btn btn-success" href="/create_customer" role="button">Click here &raquo;</a></p>
       </div>
     </div>
@@ -206,8 +215,39 @@
       <div class="panel-body">
         <p><strong><a href="https://developers.braintreepayments.com/reference/request/customer/create/node">Create
               Customer</a></strong></p>
-        <p>You can create a customer by itself, with a payment method, or with a credit card with a billing address</p>
+        <p>Click 'Pay' in Hosted Field to generate nonce. Then you can create a customer with a payment method, or with
+          a credit card with a billing address</p>
         <p><a class="btn btn-success" href="/create_customerWithPaymentMethod" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Search Customer</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a href="https://developer.paypal.com/braintree/docs/reference/request/customer/search">Search
+              Customer</a></strong></p>
+        <p>Returns a collection of Customer response objects</p>
+        <p><a class="btn btn-success" href="/search" role="button">Click here &raquo;</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3>Find Customer</h3>
+      </div>
+      <div class="panel-body">
+        <p><strong><a href="https://developers.braintreepayments.com/reference/request/customer/create/node">Find
+              Customer</a></strong></p>
+        <p>Look up a single customer using its ID</p>
+        <p><a class="btn btn-success" href="/customer_find" role="button">Click here &raquo;</a></p>
       </div>
     </div>
   </div>
@@ -640,6 +680,111 @@
             data: { 'paymentMethodNonce': payload.nonce }
           });
         }
+
+
+        //Create applePay component
+
+        var ApplePayButton = document.querySelector('#apple-pay-button');
+
+        if (window.ApplePaySession && ApplePaySession.supportsVersion(3) && ApplePaySession.canMakePayments()) {
+          // This device supports version 3 of Apple Pay.
+          console.log("This device supports version 3 of Apple Pay!");
+        }
+
+        if (!window.ApplePaySession) {
+          console.error('This device does not support Apple Pay');
+        }
+
+        if (!ApplePaySession.canMakePayments()) {
+          console.error('This device is not capable of making Apple Pay payments');
+        }
+        braintree.applePay.create({
+          client: clientInstance
+        }, function (applePayErr, applePayInstance) {
+          if (applePayErr) {
+            console.error('Error creating applePayInstance:', applePayErr);
+            return;
+          }
+          console.log("Set up your Apple Pay button here");
+          // Set up your Apple Pay button here
+
+          ApplePayButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            console.log("button clicked");
+
+            var paymentRequest = applePayInstance.createPaymentRequest({
+              countryCode: 'US',
+              currencyCode: 'USD',
+              supportedNetworks: [ 'visa', 'masterCard', 'amex', 'discover' ],
+              merchantCapabilities: [ 'supports3DS' ],
+              total: { label: 'Your Merchant Name', amount: '10.00' },
+              requiredBillingContactFields: [ "postalAddress" ]
+            });
+            console.log(paymentRequest);
+            console.log("paymentRequest.countryCode: ", paymentRequest.countryCode);
+            console.log("paymentRequest.currencyCode: ", paymentRequest.currencyCode);
+            console.log("paymentRequest.merchantCapabilities: ", paymentRequest.merchantCapabilities);
+            console.log("paymentRequest.supportedNetworks: ", paymentRequest.supportedNetworks);
+
+            var session = new ApplePaySession(3, paymentRequest);
+
+
+
+            session.onvalidatemerchant = function (event) {
+              applePayInstance.performValidation({
+                validationURL: event.validationURL,
+                displayName: 'My Store'
+              }, function (err, merchantSession) {
+                if (err) {
+                  console.log('Apple Pay failed to load.');
+                  console.log(err);
+                  // You should show an error to the user, e.g. 'Apple Pay failed to load.'
+                  return;
+                }
+                console.log('onvalidatemerchant');
+                session.completeMerchantValidation(merchantSession);
+              });
+            };
+
+            session.onpaymentauthorized = function (event) {
+              console.log('Your shipping address is:', event.payment.shippingContact);
+
+              applePayInstance.tokenize({
+                token: event.payment.token
+              }, function (tokenizeErr, payload) {
+                if (tokenizeErr) {
+                  console.error('Error tokenizing Apple Pay:', tokenizeErr);
+                  session.completePayment(ApplePaySession.STATUS_FAILURE);
+                  return;
+                }
+
+                // Send payload.nonce to your server.
+                console.log('nonce:', payload.nonce);
+                console.log('payload:', payload);
+
+                $.ajax({
+                  type: 'POST',
+                  url: '/checkout',
+                  data: {
+                    'paymentMethodNonce': payload.nonce,
+                    'deviceData': deviceData,
+                    'postalCode': payload.postalCode
+                  }
+                });
+
+                // If requested, address information is accessible in event.payment
+                // and may also be sent to your server.
+                console.log('billingPostalCode:', event.payment.billingContact.postalCode);
+
+                // After you have transacted with the payload.nonce,
+                // call `completePayment` to dismiss the Apple Pay sheet.
+                session.completePayment(ApplePaySession.STATUS_SUCCESS);
+              });
+            };
+
+            session.begin();
+          });
+        });
 
         // Create a hostedFields component to initialize the form
         braintree.hostedFields.create({
