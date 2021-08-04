@@ -84,7 +84,7 @@
         <h3>Apple Pay</h3>
       </div>
       <div class="panel-body">
-        <p>Use Safari to view Apple Pay</p>
+        <p>Use Safari to view Apple Pay, you need to login with sandbox Apple ID first</p>
         <div id="apple-pay-button" class="apple-pay-button apple-pay-button-black"></div>
       </div>
     </div>
@@ -727,8 +727,6 @@
             console.log("paymentRequest.supportedNetworks: ", paymentRequest.supportedNetworks);
 
             var session = new ApplePaySession(3, paymentRequest);
-
-
 
             session.onvalidatemerchant = function (event) {
               applePayInstance.performValidation({
