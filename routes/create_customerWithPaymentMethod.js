@@ -35,11 +35,13 @@ router.get('/', function (req, res, next) {
         phone: "312.555.1234",
         fax: "614.555.5678",
         website: "www.example.com",
+        /*
         creditCard: {
             options: {
               verifyCard: true
             }
         },
+        */
         customFields: {
             stripe_token: "stripeTok1"
         }
